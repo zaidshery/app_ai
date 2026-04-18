@@ -1,228 +1,98 @@
-import { type ReactNode } from 'react'
-const Instagram = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
-);
-const Linkedin = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
-);
-const Twitter = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
-);
-import {
-  CONTACT_EMAIL,
-  LOCATION_LABEL,
-  PHONE_DISPLAY,
-  PHONE_TEL,
-} from '@/lib/contact'
-import { type AppRoute, navigateToRoute } from '@/lib/routes'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
+import Link from 'next/link'
 
-type LegalDialogProps = {
-  title: string
-  summary: string
-  children: ReactNode
-}
+const quickLinks = [
+  { name: 'Services', href: '/services' },
+  { name: 'About', href: '/about' },
+  { name: 'Blog', href: '/blog' },
+  { name: 'Contact', href: '/contact' },
+]
 
-const LegalDialog = ({ title, summary, children }: LegalDialogProps) => (
-  <Dialog>
-    <DialogTrigger asChild>
-      <button
-        type="button"
-        className="text-xs text-gray-muted transition-colors duration-300 hover:text-white md:text-sm"
-      >
-        {title}
-      </button>
-    </DialogTrigger>
-    <DialogContent className="max-h-[85vh] overflow-y-auto border-dark-border bg-dark-card text-white sm:max-w-2xl">
-      <DialogHeader className="text-left">
-        <DialogTitle className="font-display text-xl text-white">{title}</DialogTitle>
-        <DialogDescription className="text-sm text-gray-light">{summary}</DialogDescription>
-      </DialogHeader>
-      <div className="space-y-4 text-sm leading-relaxed text-gray-light">{children}</div>
-    </DialogContent>
-  </Dialog>
-)
+const company = [
+  { name: 'Privacy Policy', href: '/privacy-policy' },
+  { name: 'Terms of Service', href: '/terms-of-service' },
+]
 
-const Footer = () => {
-  const currentYear = new Date().getFullYear()
+const socials = [
+  { name: 'X', href: 'https://x.com/digitalapplied', icon: 'M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z' },
+  { name: 'Facebook', href: 'https://www.facebook.com/digitalapplied', icon: 'M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z' },
+  { name: 'Instagram', href: 'https://www.instagram.com/digital_applied', icon: 'M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z' },
+  { name: 'LinkedIn', href: 'https://www.linkedin.com/company/digitalapplied', icon: 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z' },
+]
 
-  const quickLinks = [
-    { name: 'Services', route: 'services' as AppRoute },
-    { name: 'About', route: 'home' as AppRoute },
-    { name: 'Contact', route: 'contact' as AppRoute },
-  ]
-
-  const socialLinks = [
-    { icon: Linkedin, href: 'https://www.linkedin.com/company/digitalapplied/', label: 'LinkedIn' },
-    { icon: Twitter, href: 'https://x.com/digitalapplied', label: 'X' },
-    { icon: Instagram, href: 'https://www.instagram.com/digital_applied/', label: 'Instagram' },
-  ]
-
-  const goToRoute = (route: AppRoute) => {
-    navigateToRoute(route)
-  }
-
+export default function Footer() {
   return (
-    <footer className="relative border-t border-dark-border py-12 md:py-16">
-      <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-dark-bg to-dark-card" />
+    <footer className="border-t border-zinc-200 bg-white">
+      <div className="mx-auto max-w-6xl px-4 py-12 md:px-8">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
 
-      <div className="section-padding relative z-10">
-        <div className="container-wide">
-          <div className="mb-10 grid gap-8 md:mb-12 md:grid-cols-4 md:gap-12">
-            <div className="md:col-span-2">
-              <a
-                href="#/"
-                onClick={(event) => {
-                  event.preventDefault()
-                  goToRoute('home')
-                }}
-                className="mb-3 inline-block font-display text-xl font-bold text-white transition-colors duration-300 hover:text-violet-lavender md:mb-4 md:text-2xl"
-              >
-                Digital Applied
-              </a>
-              <p className="mb-4 max-w-md text-sm text-gray-light md:mb-6 md:text-base">
-                Full-service digital marketing delivered faster through agentic workflows. AI agent orchestration with expert-verified quality.
-              </p>
-
-              <div className="flex items-center gap-3 md:gap-4">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex h-9 w-9 items-center justify-center rounded-full border border-dark-border bg-dark-card text-gray-light transition-all duration-300 hover:border-cyan hover:text-cyan md:h-10 md:w-10"
-                    aria-label={social.label}
-                  >
-                    <social.icon className="h-4 w-4 md:h-5 md:w-5" />
-                  </a>
-                ))}
-              </div>
+          {/* Brand */}
+          <div>
+            <Link href="/" className="mb-4 inline-flex items-center gap-2">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-950 text-white font-bold text-sm">DA</span>
+              <span className="font-semibold text-zinc-950 text-base">Digital Applied</span>
+            </Link>
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-zinc-500">
+              Empowering businesses with data-driven digital marketing strategies. From SEO to social media, we deliver measurable results that drive growth.
+            </p>
+            {/* Social icons */}
+            <div className="mt-6 flex items-center gap-3">
+              {socials.map(s => (
+                <a
+                  key={s.name}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.name}
+                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 text-zinc-400 transition-all hover:border-zinc-400 hover:text-zinc-950"
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor" className="h-3.5 w-3.5">
+                    <path d={s.icon} />
+                  </svg>
+                </a>
+              ))}
             </div>
+          </div>
 
+          {/* Links */}
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-3">
             <div>
-              <h4 className="mb-3 font-display text-sm font-semibold text-white md:mb-4 md:text-base">
-                Quick Links
-              </h4>
-              <ul className="space-y-2 md:space-y-3">
-                {quickLinks.map((link) => (
-                  <li key={link.name}>
-                    <button
-                      type="button"
-                      onClick={() => goToRoute(link.route)}
-                      className="inline-block text-sm text-gray-light transition-all duration-300 hover:translate-x-1 hover:text-white md:text-base"
-                    >
-                      {link.name}
-                    </button>
+              <p className="mb-4 text-[11px] font-semibold uppercase tracking-widest text-zinc-400">Quick Links</p>
+              <ul className="space-y-2.5">
+                {quickLinks.map(l => (
+                  <li key={l.name}>
+                    <Link href={l.href} className="text-sm text-zinc-500 hover:text-zinc-950 transition-colors">{l.name}</Link>
                   </li>
                 ))}
               </ul>
             </div>
-
             <div>
-              <h4 className="mb-3 font-display text-sm font-semibold text-white md:mb-4 md:text-base">
-                Get in Touch
-              </h4>
-              <ul className="space-y-2 md:space-y-3">
-                <li>
-                  <a
-                    href={PHONE_TEL}
-                    className="text-sm text-gray-light transition-colors duration-300 hover:text-cyan md:text-base"
-                  >
-                    {PHONE_DISPLAY}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={`mailto:${CONTACT_EMAIL}`}
-                    className="text-sm text-gray-light transition-colors duration-300 hover:text-cyan md:text-base"
-                  >
-                    {CONTACT_EMAIL}
-                  </a>
-                </li>
-                <li className="text-sm text-gray-light md:text-base">{LOCATION_LABEL}</li>
+              <p className="mb-4 text-[11px] font-semibold uppercase tracking-widest text-zinc-400">Company</p>
+              <ul className="space-y-2.5">
+                {company.map(l => (
+                  <li key={l.name}>
+                    <Link href={l.href} className="text-sm text-zinc-500 hover:text-zinc-950 transition-colors">{l.name}</Link>
+                  </li>
+                ))}
               </ul>
             </div>
-          </div>
-
-          <div className="flex flex-col items-center justify-between gap-3 border-t border-dark-border pt-6 md:flex-row md:gap-4 md:pt-8">
-            <p className="text-center text-xs text-gray-muted md:text-left md:text-sm">
-              © {currentYear} Digital Applied. All rights reserved.
-            </p>
-            <div className="flex items-center gap-4 md:gap-6">
-              <LegalDialog
-                title="Privacy Policy"
-                summary="How enquiry details shared through this website are handled."
-              >
-                <p>
-                  This website is used to introduce services and help you contact Zaid Shery. When
-                  you reach out by WhatsApp, email, phone, or the enquiry form, you may share your
-                  name, phone number, business name, and project requirements.
-                </p>
-                <p>
-                  That information is used only to reply to your enquiry, prepare proposals,
-                  discuss project scope, and support active client work. Personal information is
-                  not sold to third parties.
-                </p>
-                <p>
-                  Communication may happen through third-party platforms such as WhatsApp or your
-                  email provider, and those services follow their own privacy policies.
-                </p>
-                <p>
-                  For updates or deletion requests, contact{' '}
-                  <a
-                    href={`mailto:${CONTACT_EMAIL}`}
-                    className="text-cyan transition-colors duration-300 hover:text-violet-lavender"
-                  >
-                    {CONTACT_EMAIL}
-                  </a>{' '}
-                  or call{' '}
-                  <a
-                    href={PHONE_TEL}
-                    className="text-cyan transition-colors duration-300 hover:text-violet-lavender"
-                  >
-                    {PHONE_DISPLAY}
-                  </a>
-                  .
-                </p>
-              </LegalDialog>
-              <LegalDialog
-                title="Terms of Service"
-                summary="Basic terms for using this website and requesting services."
-              >
-                <p>
-                  By using this website or contacting Zaid Shery, you agree to use the site for
-                  lawful business enquiries and to provide accurate information when requesting a
-                  quote, consultation, or project discussion.
-                </p>
-                <p>
-                  Any timelines, pricing, or deliverables mentioned on the website are general
-                  examples until they are confirmed in a project-specific proposal or written
-                  agreement.
-                </p>
-                <p>
-                  Services may depend on third-party tools such as WhatsApp, automation platforms,
-                  hosting services, and AI providers. Their availability and terms are outside the
-                  control of this website.
-                </p>
-                <p>
-                  Final project scope, payment terms, revisions, confidentiality, and ownership
-                  details should be agreed in writing before paid work begins.
-                </p>
-              </LegalDialog>
+            <div>
+              <p className="mb-4 text-[11px] font-semibold uppercase tracking-widest text-zinc-400">Get Started</p>
+              <Link href="/get-started" className="inline-flex items-center rounded-full bg-zinc-950 px-4 py-2 text-xs font-medium text-white hover:bg-zinc-800 transition-colors">
+                Free Consultation
+              </Link>
             </div>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div className="mt-10 flex flex-col items-center justify-between gap-2 border-t border-zinc-100 pt-8 md:flex-row">
+          <p className="text-xs text-zinc-400">© 2026 Digital Applied, s. r. o. All rights reserved.</p>
+          <div className="flex items-center gap-4">
+            <Link href="/privacy-policy" className="text-xs text-zinc-400 hover:text-zinc-700 transition-colors">Privacy</Link>
+            <Link href="/terms-of-service" className="text-xs text-zinc-400 hover:text-zinc-700 transition-colors">Terms</Link>
           </div>
         </div>
       </div>
     </footer>
   )
 }
-
-export default Footer
