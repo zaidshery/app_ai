@@ -1,96 +1,126 @@
 import Link from 'next/link'
-
-const quickLinks = [
-  { name: 'Services', href: '/services' },
-  { name: 'About', href: '/about' },
-  { name: 'Blog', href: '/blog' },
-  { name: 'Contact', href: '/contact' },
-]
-
-const company = [
-  { name: 'Privacy Policy', href: '/privacy-policy' },
-  { name: 'Terms of Service', href: '/terms-of-service' },
-]
-
-const socials = [
-  { name: 'X', href: 'https://x.com/digitalapplied', icon: 'M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z' },
-  { name: 'Facebook', href: 'https://www.facebook.com/digitalapplied', icon: 'M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z' },
-  { name: 'Instagram', href: 'https://www.instagram.com/digital_applied', icon: 'M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z' },
-  { name: 'LinkedIn', href: 'https://www.linkedin.com/company/digitalapplied', icon: 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z' },
-]
+import { ArrowUpRight, Mail, MapPin, MessageCircleMore, Phone } from 'lucide-react'
+import BrandMark from '@/components/brand/BrandMark'
+import { CONTACT_EMAIL, PHONE_DISPLAY, PHONE_TEL, buildWhatsAppUrl } from '@/lib/contact'
+import { companyProfile, legalLinks, navigationLinks } from '@/lib/site-content'
 
 export default function Footer() {
-  return (
-    <footer className="border-t border-zinc-200 bg-white">
-      <div className="mx-auto max-w-6xl px-4 py-12 md:px-8">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
+  const hasContactEmail = Boolean(CONTACT_EMAIL)
 
-          {/* Brand */}
+  return (
+    <footer className="mt-auto border-t border-[var(--line-soft)] bg-[var(--surface-soft)] text-[var(--text-strong)]">
+      <div className="shell py-14 md:py-18">
+        <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr]">
           <div>
-            <Link href="/" className="mb-4 inline-flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-950 text-white font-bold text-sm">DA</span>
-              <span className="font-semibold text-zinc-950 text-base">Digital Applied</span>
+            <Link href="/" className="inline-flex items-center">
+              <BrandMark
+                size={48}
+                showWordmark
+                subtitle="Calm, direct digital systems"
+                nameClassName="block font-display text-[1.55rem] text-[var(--text-strong)]"
+                subtitleClassName="block text-[0.76rem] font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]"
+              />
             </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-zinc-500">
-              Empowering businesses with data-driven digital marketing strategies. From SEO to social media, we deliver measurable results that drive growth.
+
+            <p className="mt-5 max-w-xl text-sm leading-8 text-[var(--text-body)] md:text-base">
+              {companyProfile.description} The focus stays on useful execution: clearer
+              positioning, healthier lead flow, better websites, and less internal friction.
             </p>
-            {/* Social icons */}
-            <div className="mt-6 flex items-center gap-3">
-              {socials.map(s => (
+
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {hasContactEmail ? (
                 <a
-                  key={s.name}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={s.name}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 text-zinc-400 transition-all hover:border-zinc-400 hover:text-zinc-950"
+                  href={`mailto:${CONTACT_EMAIL}`}
+                  className="surface-card-strong rounded-[1.35rem] p-4 transition-transform hover:-translate-y-0.5"
                 >
-                  <svg viewBox="0 0 24 24" fill="currentColor" className="h-3.5 w-3.5">
-                    <path d={s.icon} />
-                  </svg>
+                  <Mail className="h-4 w-4 text-[var(--text-muted)]" />
+                  <p className="mt-3 text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-[var(--text-muted)]">
+                    Email
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-[var(--text-strong)]">{CONTACT_EMAIL}</p>
                 </a>
-              ))}
+              ) : null}
+
+              <a
+                href={PHONE_TEL}
+                className="surface-card-strong rounded-[1.35rem] p-4 transition-transform hover:-translate-y-0.5"
+              >
+                <Phone className="h-4 w-4 text-[var(--text-muted)]" />
+                <p className="mt-3 text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-[var(--text-muted)]">
+                  Phone
+                </p>
+                <p className="mt-2 text-sm leading-6 text-[var(--text-strong)]">{PHONE_DISPLAY}</p>
+              </a>
+
+              <div className="surface-card-strong rounded-[1.35rem] p-4">
+                <MapPin className="h-4 w-4 text-[var(--text-muted)]" />
+                <p className="mt-3 text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-[var(--text-muted)]">
+                  Location
+                </p>
+                <p className="mt-2 text-sm leading-6 text-[var(--text-strong)]">{companyProfile.location}</p>
+              </div>
             </div>
           </div>
 
-          {/* Links */}
-          <div className="grid grid-cols-2 gap-8 md:grid-cols-3">
+          <div className="grid gap-10 sm:grid-cols-2">
             <div>
-              <p className="mb-4 text-[11px] font-semibold uppercase tracking-widest text-zinc-400">Quick Links</p>
-              <ul className="space-y-2.5">
-                {quickLinks.map(l => (
-                  <li key={l.name}>
-                    <Link href={l.href} className="text-sm text-zinc-500 hover:text-zinc-950 transition-colors">{l.name}</Link>
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-[var(--text-muted)]">
+                Explore
+              </p>
+              <ul className="mt-4 space-y-3">
+                {navigationLinks.map(link => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="inline-flex items-center gap-2 text-sm text-[var(--text-body)] transition-colors hover:text-[var(--text-strong)]"
+                    >
+                      {link.label}
+                      <ArrowUpRight className="h-3.5 w-3.5" />
+                    </Link>
                   </li>
                 ))}
               </ul>
             </div>
+
             <div>
-              <p className="mb-4 text-[11px] font-semibold uppercase tracking-widest text-zinc-400">Company</p>
-              <ul className="space-y-2.5">
-                {company.map(l => (
-                  <li key={l.name}>
-                    <Link href={l.href} className="text-sm text-zinc-500 hover:text-zinc-950 transition-colors">{l.name}</Link>
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-[var(--text-muted)]">
+                Stay Grounded
+              </p>
+              <ul className="mt-4 space-y-3">
+                {legalLinks.map(link => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-[var(--text-body)] transition-colors hover:text-[var(--text-strong)]"
+                    >
+                      {link.label}
+                    </Link>
                   </li>
                 ))}
               </ul>
-            </div>
-            <div>
-              <p className="mb-4 text-[11px] font-semibold uppercase tracking-widest text-zinc-400">Get Started</p>
-              <Link href="/get-started" className="inline-flex items-center rounded-full bg-zinc-950 px-4 py-2 text-xs font-medium text-white hover:bg-zinc-800 transition-colors">
-                Free Consultation
-              </Link>
+
+              <div className="mt-8 rounded-[1.5rem] border border-[var(--line-soft)] bg-[var(--surface-panel)] p-5">
+                <p className="text-sm leading-7 text-[var(--text-body)]">
+                  Prefer a faster conversation? Send a quick project note on WhatsApp and we
+                  will continue from there.
+                </p>
+                <a
+                  href={buildWhatsAppUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex items-center gap-2 rounded-full border border-[var(--line-soft)] bg-[var(--surface-base)] px-4 py-2 text-sm font-semibold text-[var(--text-strong)] transition-colors hover:bg-[var(--surface-panel-strong)]"
+                >
+                  <MessageCircleMore className="h-4 w-4" />
+                  WhatsApp
+                </a>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-10 flex flex-col items-center justify-between gap-2 border-t border-zinc-100 pt-8 md:flex-row">
-          <p className="text-xs text-zinc-400">© 2026 Digital Applied, s. r. o. All rights reserved.</p>
-          <div className="flex items-center gap-4">
-            <Link href="/privacy-policy" className="text-xs text-zinc-400 hover:text-zinc-700 transition-colors">Privacy</Link>
-            <Link href="/terms-of-service" className="text-xs text-zinc-400 hover:text-zinc-700 transition-colors">Terms</Link>
-          </div>
+        <div className="mt-12 flex flex-col gap-3 border-t border-[var(--line-soft)] pt-6 text-sm text-[var(--text-muted)] md:flex-row md:items-center md:justify-between">
+          <p>{new Date().getFullYear()} {companyProfile.name}. All rights reserved.</p>
+          <p>{companyProfile.serviceArea}</p>
         </div>
       </div>
     </footer>

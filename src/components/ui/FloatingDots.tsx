@@ -1,6 +1,17 @@
 'use client'
 import { useEffect, useRef } from 'react'
 
+type Dot = {
+  x: number
+  y: number
+  r: number
+  opacity: number
+  vx: number
+  vy: number
+  phase: number
+  speed: number
+}
+
 export default function FloatingDots() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -11,63 +22,71 @@ export default function FloatingDots() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    let animationId: number
+    let animationId = 0
+    let dots: Dot[] = []
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    const resize = () => {
-      canvas.width = canvas.offsetWidth
-      canvas.height = canvas.offsetHeight
+    const createDots = (width: number, height: number) => {
+      const dotCount = width < 640 ? 34 : width < 1024 ? 52 : 72
+
+      return Array.from({ length: dotCount }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        r: Math.random() * 2 + 0.9,
+        opacity: Math.random() * 0.45 + 0.18,
+        vx: (Math.random() - 0.5) * 0.18,
+        vy: (Math.random() - 0.5) * 0.18,
+        phase: Math.random() * Math.PI * 2,
+        speed: Math.random() * 0.005 + 0.0025,
+      }))
     }
 
-    resize()
-    window.addEventListener('resize', resize)
+    const resize = () => {
+      const width = canvas.offsetWidth
+      const height = canvas.offsetHeight
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
 
-    // Create dots matching the live site
-    const dots = Array.from({ length: 80 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 2.5 + 1,          // radius 1–3.5px
-      opacity: Math.random() * 0.5 + 0.2,   // 0.2–0.7 opacity
-      vx: (Math.random() - 0.5) * 0.25,     // slow horizontal drift
-      vy: (Math.random() - 0.5) * 0.25,     // slow vertical drift
-      // pulse phase
-      phase: Math.random() * Math.PI * 2,
-      speed: Math.random() * 0.005 + 0.003,
-    }))
-
-    let frame = 0
+      canvas.width = Math.floor(width * dpr)
+      canvas.height = Math.floor(height * dpr)
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      dots = createDots(width, height)
+    }
 
     const draw = () => {
-      if (!canvas || !ctx) return
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-      frame++
+      const width = canvas.offsetWidth
+      const height = canvas.offsetHeight
+      ctx.clearRect(0, 0, width, height)
 
       dots.forEach(dot => {
-        // drift
-        dot.x += dot.vx
-        dot.y += dot.vy
+        if (!prefersReducedMotion) {
+          dot.x += dot.vx
+          dot.y += dot.vy
+          dot.phase += dot.speed
+        }
 
-        // wrap around edges
-        if (dot.x < -10) dot.x = canvas.width + 10
-        if (dot.x > canvas.width + 10) dot.x = -10
-        if (dot.y < -10) dot.y = canvas.height + 10
-        if (dot.y > canvas.height + 10) dot.y = -10
+        if (dot.x < -10) dot.x = width + 10
+        if (dot.x > width + 10) dot.x = -10
+        if (dot.y < -10) dot.y = height + 10
+        if (dot.y > height + 10) dot.y = -10
 
-        // pulsing opacity
-        dot.phase += dot.speed
-        const pulse = Math.sin(dot.phase) * 0.15
+        const pulse = prefersReducedMotion ? 0 : Math.sin(dot.phase) * 0.14
         const alpha = Math.max(0.05, Math.min(0.8, dot.opacity + pulse))
 
         ctx.beginPath()
         ctx.arc(dot.x, dot.y, dot.r, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(96, 165, 250, ${alpha})`   // blue-400
+        ctx.fillStyle = `rgba(59, 130, 246, ${alpha})`
         ctx.fill()
       })
 
-      animationId = requestAnimationFrame(draw)
+      if (!prefersReducedMotion) {
+        animationId = requestAnimationFrame(draw)
+      }
     }
 
+    resize()
     draw()
 
+    window.addEventListener('resize', resize)
     return () => {
       cancelAnimationFrame(animationId)
       window.removeEventListener('resize', resize)

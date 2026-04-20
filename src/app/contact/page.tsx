@@ -1,85 +1,132 @@
-import type { Metadata } from 'next'
 import Link from 'next/link'
+import { Mail, MapPin, MessageCircleMore, Phone } from 'lucide-react'
+import PageSignalPanel from '@/components/brand/PageSignalPanel'
 import PageLayout from '@/components/ui/PageLayout'
+import PageIntro from '@/components/ui/PageIntro'
+import LeadInquiryForm from '@/components/forms/LeadInquiryForm'
+import JsonLd from '@/components/seo/JsonLd'
+import { CONTACT_EMAIL, PHONE_DISPLAY, PHONE_TEL, buildWhatsAppUrl } from '@/lib/contact'
+import { companyProfile } from '@/lib/site-content'
+import { createPageMetadata, getSiteUrl } from '@/lib/metadata'
 
-export const metadata: Metadata = {
-  title: 'Contact Us | Digital Applied',
-  description: 'Get in touch with Digital Applied. Let\'s discuss how we can help transform your digital marketing strategy.',
+export const metadata = createPageMetadata({
+  title: 'Contact',
+  description:
+    'Get in touch with ZaiferTech to discuss SEO, web development, analytics, CRM automation, or AI workflow implementation.',
+  path: '/contact',
+  keywords: ['contact ZaiferTech', 'digital systems consultation', 'website inquiry'],
+})
+
+const siteUrl = getSiteUrl()
+
+const contactJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  name: `${companyProfile.name} contact`,
+  description: 'Contact ZaiferTech to discuss your project scope.',
+  url: siteUrl ? new URL('/contact', siteUrl).toString() : undefined,
 }
 
 export default function ContactPage() {
+  const hasContactEmail = Boolean(CONTACT_EMAIL)
+
   return (
     <PageLayout>
-      <section className="py-20 md:py-28 bg-white">
-        <div className="mx-auto max-w-6xl px-4 md:px-8">
-          <div className="mb-12 text-center">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-zinc-500">Get in Touch</p>
-            <h1 className="mb-4 font-medium text-4xl tracking-tight text-zinc-950 md:text-5xl">Get in Touch</h1>
-            <p className="text-base text-zinc-500">Let's discuss how we can help transform your digital marketing strategy.</p>
+      <JsonLd data={contactJsonLd} />
+
+      <section className="page-section-tight">
+        <div className="shell">
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_28rem] lg:items-center">
+            <PageIntro
+              eyebrow="Contact"
+              title="Bring the current challenge. We will help shape the next step."
+              description="Use the form for a fuller brief, or switch to direct contact if you already know the conversation should move faster."
+            />
+
+            <PageSignalPanel
+              eyebrow="Before you reach out"
+              title="Context speeds up the first scope."
+              description="A short, clear brief is enough. Tell us what feels slow, unclear, or underperforming and we can shape the next move from there."
+            >
+              <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+                {['Current bottleneck', 'What is already live', 'What success should look like'].map(item => (
+                  <div
+                    key={item}
+                    className="rounded-[1.1rem] border border-[var(--line-soft)] bg-white/74 px-4 py-3 text-sm font-semibold text-[var(--text-strong)]"
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </PageSignalPanel>
           </div>
+        </div>
+      </section>
 
-          <div className="grid gap-12 md:grid-cols-2">
-            {/* Form */}
-            <div className="rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm">
-              <form className="space-y-5">
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <label className="mb-1.5 block text-sm font-medium text-zinc-700">First Name</label>
-                    <input type="text" placeholder="John" className="w-full rounded-lg border border-zinc-200 px-4 py-2.5 text-sm text-zinc-950 placeholder:text-zinc-400 focus:border-zinc-950 focus:outline-none" />
-                  </div>
-                  <div>
-                    <label className="mb-1.5 block text-sm font-medium text-zinc-700">Last Name</label>
-                    <input type="text" placeholder="Doe" className="w-full rounded-lg border border-zinc-200 px-4 py-2.5 text-sm text-zinc-950 placeholder:text-zinc-400 focus:border-zinc-950 focus:outline-none" />
-                  </div>
-                </div>
-                <div>
-                  <label className="mb-1.5 block text-sm font-medium text-zinc-700">Email</label>
-                  <input type="email" placeholder="john@example.com" className="w-full rounded-lg border border-zinc-200 px-4 py-2.5 text-sm text-zinc-950 placeholder:text-zinc-400 focus:border-zinc-950 focus:outline-none" />
-                </div>
-                <div>
-                  <label className="mb-1.5 block text-sm font-medium text-zinc-700">Message</label>
-                  <textarea rows={5} placeholder="Tell us about your project..." className="w-full resize-none rounded-lg border border-zinc-200 px-4 py-2.5 text-sm text-zinc-950 placeholder:text-zinc-400 focus:border-zinc-950 focus:outline-none" />
-                </div>
-                <button type="submit" className="w-full rounded-full bg-zinc-950 py-3 text-sm font-medium text-white hover:bg-zinc-800 transition-colors">
-                  Send Message
-                </button>
-              </form>
-            </div>
+      <section className="page-section bg-white/55">
+        <div className="shell">
+          <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+            <div className="snap-strip md:grid-cols-2 lg:grid-cols-1">
+              {hasContactEmail ? (
+                <article className="snap-card surface-card rounded-[1.9rem] p-6">
+                  <Mail className="h-5 w-5 text-[var(--surface-ink)]" />
+                  <p className="mt-4 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
+                    Email
+                  </p>
+                  <a
+                    href={`mailto:${CONTACT_EMAIL}`}
+                    className="mt-3 block text-lg text-[var(--text-strong)] hover:underline"
+                  >
+                    {CONTACT_EMAIL}
+                  </a>
+                </article>
+              ) : null}
 
-            {/* Info */}
-            <div className="space-y-6">
-              <div>
-                <h2 className="mb-4 font-medium text-xl text-zinc-950">Contact Information</h2>
-                <div className="space-y-4">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Email</p>
-                    <a href="mailto:hello@digitalapplied.com" className="text-sm text-zinc-950 hover:underline">hello@digitalapplied.com</a>
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Social</p>
-                    <div className="flex gap-4">
-                      {[
-                        { label: 'Facebook', href: 'https://www.facebook.com/digitalapplied' },
-                        { label: 'Instagram', href: 'https://www.instagram.com/digital_applied' },
-                        { label: 'LinkedIn', href: 'https://www.linkedin.com/company/digitalapplied' },
-                      ].map(s => (
-                        <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" className="text-sm text-zinc-500 hover:text-zinc-950 transition-colors">{s.label}</a>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-6">
-                <h3 className="mb-2 font-medium text-base text-zinc-950">Let's Start a Conversation</h3>
-                <p className="mb-4 text-sm leading-relaxed text-zinc-500">
-                  We're here to help you grow your business with effective digital marketing strategies. Whether you need help with SEO, social media, or a complete digital transformation, our team is ready to create a custom solution for your needs.
+              <article className="snap-card surface-card rounded-[1.9rem] p-6">
+                <Phone className="h-5 w-5 text-[var(--surface-ink)]" />
+                <p className="mt-4 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
+                  Phone / WhatsApp
                 </p>
-                <Link href="/get-started" className="inline-flex h-9 items-center rounded-full bg-zinc-950 px-5 text-sm font-medium text-white hover:bg-zinc-800 transition-colors">
-                  Get Started Free
+                <a href={PHONE_TEL} className="mt-3 block text-lg text-[var(--text-strong)] hover:underline">
+                  {PHONE_DISPLAY}
+                </a>
+                <a
+                  href={buildWhatsAppUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="button-secondary mt-5"
+                >
+                  <MessageCircleMore className="h-4 w-4" />
+                  WhatsApp
+                </a>
+              </article>
+
+              <article className="snap-card surface-card rounded-[1.9rem] p-6">
+                <MapPin className="h-5 w-5 text-[var(--surface-ink)]" />
+                <p className="mt-4 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
+                  Base
+                </p>
+                <p className="mt-3 text-lg text-[var(--text-strong)]">{companyProfile.location}</p>
+                <p className="mt-4 text-sm leading-8 text-[var(--text-body)]">
+                  {companyProfile.serviceArea}
+                </p>
+              </article>
+
+              <article className="snap-card surface-card rounded-[1.9rem] p-6">
+                <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
+                  Not sure where to start?
+                </p>
+                <p className="mt-4 text-sm leading-8 text-[var(--text-body)]">
+                  If you are still deciding between services, the intake form is the best place to
+                  start. If you already know the scope, use the direct options above.
+                </p>
+                <Link href="/get-started" className="button-ghost mt-4 px-0">
+                  Start a Project
                 </Link>
-              </div>
+              </article>
             </div>
+
+            <LeadInquiryForm />
           </div>
         </div>
       </section>

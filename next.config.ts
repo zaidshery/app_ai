@@ -1,7 +1,9 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
+
+const alternateDistDir = process.env.NEXT_DIST_DIR?.trim()
 
 const nextConfig: NextConfig = {
-  /* config options here */
-};
+  ...(alternateDistDir ? { distDir: alternateDistDir } : {}),
+}
 
-export default nextConfig;
+export default nextConfig

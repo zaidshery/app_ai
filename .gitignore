@@ -15,12 +15,14 @@
 
 # next.js
 /.next/
+/.next-build-check/
 /out/
 
 # production
 /build
 
 # misc
+.codex-run/
 .DS_Store
 *.pem
 

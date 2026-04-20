@@ -1,75 +1,205 @@
-import type { Metadata } from 'next'
 import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
+import PageSignalPanel from '@/components/brand/PageSignalPanel'
 import PageLayout from '@/components/ui/PageLayout'
-import CtaBanner from '@/components/ui/CtaBanner'
-import { Search, TrendingUp, Users, BarChart3, Edit3, Code, ShoppingCart, Briefcase, Cpu } from 'lucide-react'
+import PageIntro from '@/components/ui/PageIntro'
+import SectionIntro from '@/components/ui/SectionIntro'
+import JsonLd from '@/components/seo/JsonLd'
+import { serviceIconMap } from '@/components/ui/service-icons'
+import { createPageMetadata, getSiteUrl } from '@/lib/metadata'
+import { companyProfile, engagementModels, getServiceBySlug, serviceCategories } from '@/lib/site-content'
 
-export const metadata: Metadata = {
-  title: 'Digital Marketing Services | Digital Applied',
-  description: 'Full-service digital marketing with AI-powered execution — SEO, PPC, content, and development delivered faster through agentic workflows.',
+export const metadata = createPageMetadata({
+  title: 'Services',
+  description:
+    'Explore ZaiferTech services across SEO, web development, analytics, CRM automation, ecommerce, AI workflow automation, custom software, and B2B demand generation.',
+  path: '/services',
+  keywords: [
+    'SEO services',
+    'web development',
+    'analytics setup',
+    'CRM automation',
+    'AI workflows',
+    'custom software development',
+    'B2B demand generation',
+    'SaaS development',
+  ],
+})
+
+const siteUrl = getSiteUrl()
+
+const servicesJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: `${companyProfile.name} services`,
+  itemListElement: serviceCategories.flatMap(category =>
+    category.slugs.map((slug, index) => {
+      const service = getServiceBySlug(slug)
+
+      return {
+        '@type': 'ListItem',
+        position: index + 1,
+        name: service?.name,
+        url: service && siteUrl ? new URL(`/services/${service.slug}`, siteUrl).toString() : undefined,
+      }
+    })
+  ),
 }
 
-const services = [
-  { icon: Search, title: 'SEO Optimization', slug: 'seo-optimization', desc: 'Technical audits, keyword strategy, and on-page optimization that boost rankings and drive organic traffic.', items: ['Comprehensive SEO audits', 'Data-driven keyword strategy', 'On-page optimization at scale', 'Technical SEO improvements'] },
-  { icon: TrendingUp, title: 'PPC Advertising', slug: 'ppc-advertising', desc: 'Smarter bid management and campaign optimization across Google Ads and social platforms for maximum ROAS.', items: ['Google Ads management', 'Facebook & Instagram ads', 'LinkedIn advertising', 'Display advertising'] },
-  { icon: Users, title: 'Social Media Marketing', slug: 'social-media-marketing', desc: 'Build authentic connections and grow your community with strategic social media management and creative campaigns.', items: ['Social media strategy', 'Strategic content creation', 'Community management', 'Paid social advertising'] },
-  { icon: BarChart3, title: 'Analytics & Insights', slug: 'analytics-insights', desc: 'Automated reporting and real-time dashboards that reveal opportunities and guide strategic decisions.', items: ['Google Analytics setup', 'Custom dashboard creation', 'Conversion tracking', 'User behavior analysis'] },
-  { icon: Edit3, title: 'Content Marketing', slug: 'content-marketing', desc: 'Strategic content that ranks, engages, and converts your target audience at every stage of the funnel.', items: ['Content strategy development', 'Blog production at scale', 'Video content creation', 'Infographic design'] },
-  { icon: Code, title: 'Web Development', slug: 'web-development', desc: 'High-performance websites built on modern frameworks for speed, conversion, and SEO.', items: ['Next.js & React development', 'Performance optimization', 'Responsive design', 'CMS integration'] },
-  { icon: ShoppingCart, title: 'eCommerce Solutions', slug: 'ecommerce-solutions', desc: 'High-converting Shopify & WooCommerce stores with seamless checkout and payment integration.', items: ['Shopify & WooCommerce', 'Payment gateway integration', 'Inventory management', 'Mobile-first design'] },
-  { icon: Briefcase, title: 'CRM & Automation', slug: 'crm-automation', desc: 'Streamline sales and marketing with HubSpot & Zoho CRM plus automated workflows that save hours weekly.', items: ['HubSpot & Zoho setup', 'Workflow automation', 'Lead nurturing', 'Data migration'] },
-  { icon: Cpu, title: 'AI & Digital Transformation', slug: 'ai-digital-transformation', desc: 'Integrate agentic AI into your operations — process automation, predictive analytics, intelligent workflows.', items: ['AI strategy & readiness', 'Chatbot & AI assistants', 'Process automation', 'Predictive analytics'] },
-]
+const serviceToneClasses = [
+  'from-[rgba(9,9,11,0.06)] via-transparent to-transparent',
+  'from-[rgba(161,161,170,0.14)] via-transparent to-transparent',
+  'from-[rgba(9,9,11,0.04)] via-transparent to-transparent',
+] as const
 
 export default function ServicesPage() {
   return (
     <PageLayout>
-      {/* Hero */}
-      <section className="py-20 md:py-28 bg-white">
-        <div className="mx-auto max-w-6xl px-4 md:px-8 text-center">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-zinc-500">Full-Service Marketing</p>
-          <h1 className="mb-4 font-medium text-4xl tracking-tight text-zinc-950 md:text-5xl">Digital Marketing Services<br />That Drive Results</h1>
-          <p className="mx-auto max-w-2xl text-base leading-relaxed text-zinc-500">
-            Full-service digital marketing with AI-powered execution. We deliver SEO, PPC, content, and development faster through automated workflows — with every deliverable verified by an expert.
-          </p>
-          <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <Link href="/get-started" className="inline-flex h-12 items-center rounded-full bg-zinc-950 px-8 text-sm font-medium text-white hover:bg-zinc-800 transition-colors">Get Started</Link>
-            <Link href="/contact" className="inline-flex h-12 items-center rounded-full border border-zinc-200 px-8 text-sm font-medium text-zinc-950 hover:bg-zinc-50 transition-colors">Schedule Consultation</Link>
+      <JsonLd data={servicesJsonLd} />
+
+      <section className="page-section-tight">
+        <div className="shell">
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_28rem] lg:items-center">
+            <PageIntro
+              eyebrow="Services"
+              title="Offers shaped around the real bottleneck."
+              description="ZaiferTech focuses on discoverability, conversion quality, tracking clarity, and operational efficiency. The work can start with one priority or connect several of them into a stronger system."
+              actions={
+                <>
+                  <Link href="/get-started" className="button-primary">
+                    Start a Project
+                  </Link>
+                  <Link href="/contact" className="button-secondary">
+                    Contact
+                  </Link>
+                </>
+              }
+            />
+
+            <PageSignalPanel
+              eyebrow="How offers are chosen"
+              title="Start with the cleanest lever."
+              description="The scope should follow the real bottleneck. Search, pages, tracking, and operations can connect after the first priority is clear."
+            >
+              <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+                {[
+                  `${serviceCategories.length} service groups`,
+                  `${engagementModels.length} ways to work`,
+                  'One clear next scope',
+                ].map(item => (
+                  <div
+                    key={item}
+                    className="rounded-[1.1rem] border border-[var(--line-soft)] bg-white/74 px-4 py-3 text-sm font-semibold text-[var(--text-strong)]"
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </PageSignalPanel>
           </div>
         </div>
       </section>
 
-      {/* Services Grid */}
-      <section className="py-16 md:py-20 bg-zinc-50/50 border-y border-zinc-200">
-        <div className="mx-auto max-w-6xl px-4 md:px-8">
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {services.map(service => (
-              <Link key={service.slug} href={`/services/${service.slug}`} className="group block h-full rounded-xl border border-zinc-200 bg-white p-6 hover:border-zinc-400 hover:shadow-md transition-all">
-                <div className="mb-4 text-zinc-950"><service.icon className="h-5 w-5" /></div>
-                <h3 className="mb-2 font-medium text-base text-zinc-950 group-hover:text-zinc-700">{service.title}</h3>
-                <p className="mb-4 text-sm leading-relaxed text-zinc-500">{service.desc}</p>
-                <ul className="space-y-1.5">
-                  {service.items.map(item => (
-                    <li key={item} className="flex items-center gap-2 text-xs text-zinc-500">
-                      <span className="h-1.5 w-1.5 rounded-full bg-zinc-400 flex-shrink-0" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </Link>
+      <section className="page-section bg-white/55">
+        <div className="shell space-y-12">
+          {serviceCategories.map((category, categoryIndex) => (
+            <div key={category.title}>
+              <SectionIntro
+                eyebrow={category.title}
+                title={category.title}
+                description={category.description}
+              />
+
+              <div className="snap-strip mt-8 md:grid-cols-2 xl:grid-cols-3">
+                {category.slugs.map((slug, cardIndex) => {
+                  const service = getServiceBySlug(slug)
+
+                  if (!service) {
+                    return null
+                  }
+
+                  const Icon = serviceIconMap[service.icon]
+                  const toneClass =
+                    serviceToneClasses[(categoryIndex + cardIndex) % serviceToneClasses.length]
+
+                  return (
+                    <article
+                      key={service.slug}
+                      className="snap-card surface-card relative overflow-hidden rounded-[1.9rem] p-6"
+                    >
+                      <div
+                        className={`absolute inset-x-0 top-0 h-20 bg-gradient-to-br ${toneClass}`}
+                      />
+                      <div className="flex h-12 w-12 items-center justify-center rounded-[1rem] border border-[var(--line-soft)] bg-[var(--accent-cool-soft)] text-[var(--surface-ink)]">
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <div className="relative">
+                        <p className="mt-6 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
+                          {service.label}
+                        </p>
+                        <h2 className="mt-2 text-[1.95rem] text-[var(--text-strong)]">{service.name}</h2>
+                        <p className="mt-4 text-sm leading-8 text-[var(--text-body)]">{service.summary}</p>
+                      </div>
+                      <div className="mt-5 rounded-[1.2rem] border border-[var(--line-soft)] bg-white/72 p-4">
+                        <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
+                          Best fit
+                        </p>
+                        <p className="mt-2 text-sm leading-7 text-[var(--text-body)]">{service.idealFor}</p>
+                      </div>
+                      <div className="action-row mt-6">
+                        <Link href={`/services/${service.slug}`} className="button-secondary">
+                          Service details
+                        </Link>
+                        <Link
+                          href={`/get-started?service=${service.slug}`}
+                          className="button-ghost px-0"
+                        >
+                          Start with this
+                          <ArrowRight className="h-4 w-4" />
+                        </Link>
+                      </div>
+                    </article>
+                  )
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="page-section">
+        <div className="shell">
+          <SectionIntro
+            eyebrow="How work can be scoped"
+            title="The offer can start narrow without losing the bigger picture."
+            description="If a single landing page, audit, automation, or analytics cleanup is the real need, the engagement should start there. Broader work can build from that foundation."
+          />
+
+          <div className="snap-strip mt-10 md:grid-cols-3">
+            {engagementModels.map((model, index) => (
+              <article
+                key={model.name}
+                className="snap-card surface-card relative overflow-hidden rounded-[1.8rem] p-6"
+              >
+                <div
+                  className={`absolute inset-x-0 top-0 h-20 bg-gradient-to-br ${serviceToneClasses[index % serviceToneClasses.length]}`}
+                />
+                <div className="relative">
+                  <h2 className="text-[1.9rem] text-[var(--text-strong)]">{model.name}</h2>
+                  <p className="mt-4 text-sm leading-8 text-[var(--text-body)]">
+                    {model.description}
+                  </p>
+                  <ul className="detail-list mt-6">
+                    {model.points.map(point => (
+                      <li key={point}>{point}</li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
-
-      <CtaBanner
-        title="Ready to Accelerate Your Growth?"
-        description="Let's discuss how our services can help you achieve your business goals faster."
-        primaryLabel="Get Started"
-        primaryHref="/get-started"
-        secondaryLabel="Schedule Consultation"
-        secondaryHref="/contact"
-      />
     </PageLayout>
   )
 }

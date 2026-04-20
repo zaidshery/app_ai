@@ -1,65 +1,113 @@
-'use client'
-import { useState } from 'react'
 import Link from 'next/link'
+import PageSignalPanel from '@/components/brand/PageSignalPanel'
 import PageLayout from '@/components/ui/PageLayout'
-import { ArrowRight, ArrowLeft, Rocket, Globe, TrendingUp, ShoppingCart, Cpu, Megaphone, Zap } from 'lucide-react'
+import PageIntro from '@/components/ui/PageIntro'
+import LeadInquiryForm from '@/components/forms/LeadInquiryForm'
+import { contactExpectations, getServiceBySlug } from '@/lib/site-content'
+import { createPageMetadata } from '@/lib/metadata'
 
-const options = [
-  { icon: Rocket, title: "I'm launching a business", desc: 'Need everything from branding to web presence', href: '/contact' },
-  { icon: Globe, title: 'I need a website redesign', desc: 'Modernize my existing online presence', href: '/services/web-development' },
-  { icon: TrendingUp, title: 'I want to grow my business', desc: 'Scale up with marketing and optimization', href: '/services' },
-  { icon: ShoppingCart, title: "I'm building an online store", desc: 'Create or improve my e-commerce presence', href: '/services/ecommerce-solutions' },
-  { icon: Cpu, title: 'I want to integrate AI', desc: 'Integrate AI into my existing systems', href: '/services/ai-digital-transformation' },
-  { icon: Megaphone, title: 'I need marketing help', desc: 'Boost visibility and reach more customers', href: '/services' },
-  { icon: Zap, title: 'I want to automate my workflows', desc: 'Streamline operations and eliminate manual processes', href: '/services/crm-automation' },
-]
+export const metadata = createPageMetadata({
+  title: 'Get Started',
+  description:
+    'Start a guided project intake with ZaiferTech for SEO, web development, analytics, CRM automation, ecommerce, or AI workflow implementation.',
+  path: '/get-started',
+  keywords: ['project intake', 'ZaiferTech inquiry', 'start digital project'],
+})
 
-export default function GetStartedPage() {
-  const [selected, setSelected] = useState<number | null>(null)
+export default async function GetStartedPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ service?: string }>
+}) {
+  const resolvedSearchParams = await searchParams
+  const selectedService =
+    resolvedSearchParams.service && getServiceBySlug(resolvedSearchParams.service)
+      ? resolvedSearchParams.service
+      : undefined
 
   return (
     <PageLayout>
-      <section className="py-20 md:py-28 bg-white">
-        <div className="mx-auto max-w-3xl px-4 md:px-8 text-center">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-zinc-500">Begin Your Transformation</p>
-          <h1 className="mb-4 font-medium text-4xl tracking-tight text-zinc-950 md:text-5xl">Build for the Agent-First Era</h1>
-          <p className="mb-12 text-base leading-relaxed text-zinc-500">Tell us about your vision. We combine agentic development with strategic design to build future-proof digital solutions.</p>
+      <section className="page-section-tight">
+        <div className="shell">
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_28rem] lg:items-center">
+            <PageIntro
+              eyebrow="Guided intake"
+              title="Start with the current bottleneck."
+              description="Use this page when you want to give more context before the conversation begins. A stronger brief makes the first scope easier to recommend."
+              actions={
+                <Link href="/services" className="button-secondary">
+                  Review services first
+                </Link>
+              }
+            />
 
-          <p className="mb-6 text-sm font-medium text-zinc-700">What brings you here?</p>
-          <p className="mb-8 text-xs text-zinc-500">Select the option that best matches your current situation.</p>
-
-          <div className="grid gap-3 text-left">
-            {options.map((opt, i) => (
-              <button
-                key={i}
-                onClick={() => setSelected(i)}
-                className={`flex items-center gap-4 rounded-xl border p-5 text-left transition-all ${selected === i ? 'border-zinc-950 bg-zinc-950 text-white' : 'border-zinc-200 bg-white hover:border-zinc-400'}`}
-              >
-                <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg ${selected === i ? 'bg-white/10' : 'bg-zinc-100'}`}>
-                  <opt.icon className={`h-5 w-5 ${selected === i ? 'text-white' : 'text-zinc-950'}`} />
-                </div>
-                <div>
-                  <div className={`font-medium text-sm ${selected === i ? 'text-white' : 'text-zinc-950'}`}>{opt.title}</div>
-                  <div className={`text-xs mt-0.5 ${selected === i ? 'text-zinc-300' : 'text-zinc-500'}`}>{opt.desc}</div>
-                </div>
-                <ArrowRight className={`ml-auto h-4 w-4 flex-shrink-0 ${selected === i ? 'text-white' : 'text-zinc-300'}`} />
-              </button>
-            ))}
+            <PageSignalPanel
+              eyebrow="What to include"
+              title="Context beats polish."
+              description="You do not need a polished brief. A clear description of the current situation is usually enough to shape the right next scope."
+            >
+              <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+                {['What feels slow', 'What is already live', 'What a better result looks like'].map(item => (
+                  <div
+                    key={item}
+                    className="rounded-[1.1rem] border border-[var(--line-soft)] bg-white/74 px-4 py-3 text-sm font-semibold text-[var(--text-strong)]"
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </PageSignalPanel>
           </div>
+        </div>
+      </section>
 
-          <div className="mt-8 flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-1 text-sm text-zinc-500 hover:text-zinc-950 transition-colors">
-              <ArrowLeft className="h-4 w-4" /> Back
-            </Link>
-            {selected !== null ? (
-              <Link href={options[selected].href} className="inline-flex h-10 items-center gap-2 rounded-full bg-zinc-950 px-6 text-sm font-medium text-white hover:bg-zinc-800 transition-colors">
-                Next Step <ArrowRight className="h-4 w-4" />
-              </Link>
-            ) : (
-              <button disabled className="inline-flex h-10 items-center gap-2 rounded-full bg-zinc-200 px-6 text-sm font-medium text-zinc-400 cursor-not-allowed">
-                Next Step <ArrowRight className="h-4 w-4" />
-              </button>
-            )}
+      <section className="page-section bg-white/55">
+        <div className="shell">
+          <div className="grid gap-6 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+            <div className="snap-strip md:grid-cols-2 lg:grid-cols-1">
+              <article className="snap-card surface-card rounded-[1.9rem] p-6">
+                <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
+                  What helps most
+                </p>
+                <ul className="detail-list mt-5">
+                  {contactExpectations.map(expectation => (
+                    <li key={expectation}>{expectation}</li>
+                  ))}
+                </ul>
+              </article>
+
+              <article className="snap-card surface-card rounded-[1.9rem] p-6">
+                <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
+                  Good inputs
+                </p>
+                <p className="mt-4 text-sm leading-8 text-[var(--text-body)]">
+                  Share what is already live, what feels slow or unclear, and what a better result
+                  should look like over the next few months.
+                </p>
+              </article>
+
+              <article className="snap-card surface-card rounded-[1.9rem] p-6">
+                <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
+                  If you prefer direct contact
+                </p>
+                <p className="mt-4 text-sm leading-8 text-[var(--text-body)]">
+                  You can switch to the standard contact page at any time if you would rather use
+                  direct email or WhatsApp without completing the full intake.
+                </p>
+                <Link href="/contact" className="button-ghost mt-4 px-0">
+                  Go to contact options
+                </Link>
+              </article>
+            </div>
+
+            <LeadInquiryForm
+              defaultService={selectedService}
+              heading={
+                selectedService
+                  ? 'You already picked a direction. Now add the context around it.'
+                  : 'Describe the current situation and the project can take shape from there.'
+              }
+            />
           </div>
         </div>
       </section>

@@ -1,132 +1,178 @@
-import type { Metadata } from 'next'
 import Link from 'next/link'
+import PageSignalPanel from '@/components/brand/PageSignalPanel'
+import BrandMark from '@/components/brand/BrandMark'
 import PageLayout from '@/components/ui/PageLayout'
-import CtaBanner from '@/components/ui/CtaBanner'
-import { Target, Eye, TrendingUp, Users, Lightbulb, Award } from 'lucide-react'
+import PageIntro from '@/components/ui/PageIntro'
+import JsonLd from '@/components/seo/JsonLd'
+import { aboutPrinciples, companyProfile, operatingSteps, serviceCategories } from '@/lib/site-content'
+import { createPageMetadata, getSiteUrl } from '@/lib/metadata'
 
-export const metadata: Metadata = {
-  title: 'About Us | Digital Applied',
-  description: 'A boutique digital marketing consultancy passionate about driving growth through innovative strategies and data-driven solutions. Founded 2019.',
+export const metadata = createPageMetadata({
+  title: 'About',
+  description:
+    'Learn how ZaiferTech approaches search visibility, websites, analytics, and workflow automation with a practical, truth-first operating model.',
+  path: '/about',
+  keywords: ['about ZaiferTech', 'digital systems approach', 'growth operations'],
+})
+
+const siteUrl = getSiteUrl()
+
+const aboutJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: `${companyProfile.name} about`,
+  description: companyProfile.description,
+  url: siteUrl ? new URL('/about', siteUrl).toString() : undefined,
 }
-
-const values = [
-  { icon: Lightbulb, title: 'Innovation First', desc: 'We stay ahead of digital trends and continuously evolve our strategies to keep our clients at the forefront.' },
-  { icon: Eye, title: 'Transparency', desc: 'No hidden fees, no confusing jargon. We believe in clear communication and honest partnerships.' },
-  { icon: TrendingUp, title: 'Results-Driven', desc: 'Every strategy we implement is designed with measurable outcomes and your business growth in mind.' },
-  { icon: Users, title: 'Data-Driven Approach', desc: 'Every decision is backed by comprehensive data analysis and market research. Strategies tested, measured, and optimized.' },
-  { icon: Target, title: 'Industry Expertise', desc: 'Our team consists of certified professionals with expertise across various industries. We understand your unique challenges.' },
-  { icon: Award, title: 'Personalized Solutions', desc: 'We don\'t do one-size-fits-all. Every strategy is crafted specifically for your business, goals, and audience.' },
-]
 
 export default function AboutPage() {
   return (
     <PageLayout>
-      {/* Hero */}
-      <section className="py-20 md:py-28 bg-white">
-        <div className="mx-auto max-w-4xl px-4 md:px-8 text-center">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-zinc-500">About Us</p>
-          <h1 className="mb-6 font-medium text-4xl tracking-tight text-zinc-950 md:text-5xl">We're Digital Applied</h1>
-          <p className="text-lg leading-relaxed text-zinc-500">
-            A boutique digital marketing consultancy passionate about driving growth through innovative strategies and data-driven solutions.
-          </p>
-        </div>
-      </section>
+      <JsonLd data={aboutJsonLd} />
 
-      {/* Stats bar */}
-      <section className="border-y border-zinc-200 bg-zinc-50/50 py-8">
-        <div className="mx-auto max-w-3xl px-4 md:px-8">
-          <div className="grid grid-cols-2 gap-6 md:grid-cols-3 text-center">
-            <div><div className="font-semibold text-2xl text-zinc-950">2019</div><div className="mt-1 text-xs text-zinc-500">Founded</div></div>
-            <div><div className="font-semibold text-2xl text-zinc-950">10+</div><div className="mt-1 text-xs text-zinc-500">Years Combined Experience</div></div>
-            <div className="col-span-2 md:col-span-1"><div className="font-semibold text-2xl text-zinc-950">Boutique</div><div className="mt-1 text-xs text-zinc-500">Personalised Service</div></div>
-          </div>
-        </div>
-      </section>
+      <section className="page-section-tight">
+        <div className="shell">
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_28rem] lg:items-center">
+            <PageIntro
+              eyebrow="About"
+              title="A practical studio model for useful digital systems."
+              description="ZaiferTech helps businesses improve discoverability, conversion quality, tracking clarity, and operating flow. The emphasis is on work that can be understood, implemented, and improved over time."
+            />
 
-      {/* Mission */}
-      <section className="py-20 md:py-28 bg-white">
-        <div className="mx-auto max-w-6xl px-4 md:px-8">
-          <div className="grid gap-16 md:grid-cols-2 md:items-center">
-            <div>
-              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-zinc-500">Our Mission</p>
-              <h2 className="mb-6 font-medium text-3xl tracking-tight text-zinc-950 md:text-4xl">Bridging the gap between traditional business and modern digital</h2>
-              <p className="mb-4 text-base leading-relaxed text-zinc-500">
-                At Digital Applied, we believe every business deserves a powerful digital presence. Our mission is to bridge the gap between traditional business models and modern digital opportunities.
-              </p>
-              <p className="text-base leading-relaxed text-zinc-500">
-                We combine creativity with analytics, strategy with execution, and innovation with proven methodologies to deliver marketing solutions that not only look great but drive real business results.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-8">
-              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-zinc-500">Founded in 2019</p>
-              <p className="text-base leading-relaxed text-zinc-600">
-                Digital Applied has been helping businesses navigate the digital landscape with personalized attention and dedicated service that larger agencies can't match.
-              </p>
-              <div className="mt-8 grid grid-cols-2 gap-4">
-                {[
-                  { v: '128K+', l: 'Leads Generated' },
-                  { v: '45%', l: 'Avg Cost Reduction' },
-                  { v: '217%', l: 'Organic Growth' },
-                  { v: '€72M+', l: 'Revenue Generated' },
-                ].map(stat => (
-                  <div key={stat.l} className="text-center rounded-xl border border-zinc-200 bg-white p-4">
-                    <div className="font-semibold text-xl text-zinc-950">{stat.v}</div>
-                    <div className="mt-1 text-xs text-zinc-500">{stat.l}</div>
+            <PageSignalPanel
+              eyebrow="Studio model"
+              title="Direct scope, fewer layers."
+              description="The aim is to reduce agency drag: clearer priorities, closer execution, and systems that still make sense after launch."
+            >
+              <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+                {['Truth-first copy', 'Implementation close to strategy', 'Remote-friendly delivery'].map(item => (
+                  <div
+                    key={item}
+                    className="rounded-[1.1rem] border border-[var(--line-soft)] bg-white/74 px-4 py-3 text-sm font-semibold text-[var(--text-strong)]"
+                  >
+                    {item}
                   </div>
                 ))}
               </div>
-            </div>
+            </PageSignalPanel>
           </div>
         </div>
       </section>
 
-      {/* Core Values */}
-      <section className="py-20 md:py-28 bg-zinc-50/50 border-y border-zinc-200">
-        <div className="mx-auto max-w-6xl px-4 md:px-8">
-          <div className="mb-12 text-center">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-zinc-500">Our Core Values</p>
-            <h2 className="font-medium text-3xl tracking-tight text-zinc-950 md:text-4xl">These principles guide everything we do</h2>
-          </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {values.map((v, i) => (
-              <div key={i} className="rounded-xl border border-zinc-200 bg-white p-6">
-                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-zinc-100"><v.icon className="h-5 w-5 text-zinc-950" /></div>
-                <h3 className="mb-2 font-medium text-base text-zinc-950">{v.title}</h3>
-                <p className="text-sm leading-relaxed text-zinc-500">{v.desc}</p>
+      <section className="page-section bg-white/55">
+        <div className="shell">
+          <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+            <article className="surface-card rounded-[2rem] p-6 md:p-7">
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
+                Positioning
+              </p>
+              <h2 className="mt-4 text-[2.1rem] text-[var(--text-strong)]">
+                Strategy matters more when it reaches implementation.
+              </h2>
+              <p className="mt-5 text-sm leading-8 text-[var(--text-body)] md:text-base">
+                ZaiferTech is built around practical improvement work rather than oversized agency
+                process. That means direct attention to the pages, systems, and reporting that are
+                influencing real business outcomes right now.
+              </p>
+              <p className="mt-4 text-sm leading-8 text-[var(--text-body)] md:text-base">
+                The business is based in {companyProfile.location} and works in a remote-friendly
+                way, making it easier to support clients who need focused help without extra
+                operational drag.
+              </p>
+            </article>
+
+            <article className="surface-card rounded-[2rem] p-6 md:p-7">
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
+                What the work tends to connect
+              </p>
+              <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                {serviceCategories.map(category => (
+                  <div
+                    key={category.title}
+                    className="rounded-[1.35rem] border border-[var(--line-soft)] bg-white/84 p-4"
+                  >
+                    <h2 className="text-[1.5rem] text-[var(--text-strong)]">{category.title}</h2>
+                    <p className="mt-3 text-sm leading-7 text-[var(--text-body)]">
+                      {category.description}
+                    </p>
+                  </div>
+                ))}
               </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="page-section">
+        <div className="shell">
+          <div className="max-w-3xl">
+            <span className="section-kicker">Principles</span>
+            <h2 className="section-heading mt-5 max-w-[12ch]">
+              The rules that keep the work grounded.
+            </h2>
+          </div>
+
+          <div className="snap-strip mt-10 md:grid-cols-2 xl:grid-cols-4">
+            {aboutPrinciples.map(principle => (
+              <article key={principle.title} className="snap-card surface-card rounded-[1.8rem] p-6">
+                <h3 className="text-[1.75rem] text-[var(--text-strong)]">{principle.title}</h3>
+                <p className="mt-4 text-sm leading-8 text-[var(--text-body)]">
+                  {principle.description}
+                </p>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Founder */}
-      <section className="py-20 md:py-28 bg-white">
-        <div className="mx-auto max-w-6xl px-4 md:px-8">
-          <div className="mb-12 text-center">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-zinc-500">Meet the Founder</p>
-            <h2 className="font-medium text-3xl tracking-tight text-zinc-950 md:text-4xl">The person behind Digital Applied</h2>
+      <section className="page-section bg-white/55">
+        <div className="shell">
+          <div className="max-w-3xl">
+            <span className="section-kicker">How work moves</span>
+            <h2 className="section-heading mt-5 max-w-[12ch]">
+              A simple operating rhythm from first review to implementation.
+            </h2>
           </div>
-          <div className="mx-auto max-w-2xl rounded-2xl border border-zinc-200 bg-zinc-50 p-8 text-center">
-            <div className="mx-auto mb-4 h-20 w-20 rounded-full bg-zinc-200 flex items-center justify-center">
-              <span className="text-2xl font-semibold text-zinc-500">RG</span>
+
+          <div className="snap-strip mt-10 md:grid-cols-3">
+            {operatingSteps.map((step, index) => (
+              <article key={step.title} className="snap-card surface-card rounded-[1.8rem] p-6">
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[var(--surface-ink)] text-sm font-bold text-white">
+                  0{index + 1}
+                </span>
+                <h3 className="mt-5 text-[1.75rem] text-[var(--text-strong)]">{step.title}</h3>
+                <p className="mt-4 text-sm leading-8 text-[var(--text-body)]">{step.description}</p>
+              </article>
+            ))}
+          </div>
+
+          <div className="surface-card-strong mt-8 rounded-[2rem] p-6 md:p-8">
+            <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+              <div>
+                <BrandMark size={48} theme="dark" className="mb-5" markClassName="rounded-[1.1rem]" />
+                <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-white/42">
+                  Next step
+                </p>
+                <h2 className="mt-4 max-w-[11ch] font-display text-[2.5rem] text-white">
+                  If the approach sounds right, the intake is the best place to continue.
+                </h2>
+              </div>
+
+              <div className="action-row">
+                <Link href="/get-started" className="button-primary bg-white text-[var(--surface-ink)] hover:bg-[#f2ebe1]">
+                  Start a Project
+                </Link>
+                <Link
+                  href="/services"
+                  className="button-secondary border-white/15 bg-white/5 text-white hover:bg-white/10 hover:text-white"
+                >
+                  Review Services
+                </Link>
+              </div>
             </div>
-            <h3 className="mb-1 font-semibold text-xl text-zinc-950">Richard Gibbons</h3>
-            <p className="mb-4 text-sm text-zinc-500">Founder & Lead Strategist</p>
-            <p className="text-sm leading-relaxed text-zinc-600">
-              With 10+ years of experience in digital marketing, Richard founded Digital Applied to bring enterprise-level strategy and AI-powered execution to businesses of all sizes. His background spans SEO, PPC, content strategy, and full-stack web development.
-            </p>
           </div>
         </div>
       </section>
-
-      <CtaBanner
-        title="Ready to Transform Your Digital Presence?"
-        description="Work with a team that brings expertise, innovation, and dedication to every project."
-        primaryLabel="Get Started"
-        primaryHref="/get-started"
-        secondaryLabel="View Services"
-        secondaryHref="/services"
-      />
     </PageLayout>
   )
 }

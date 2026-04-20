@@ -1,90 +1,134 @@
-'use client'
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import FloatingDots from '@/components/ui/FloatingDots'
+import { ArrowRight, MessageCircleMore } from 'lucide-react'
+import BrandMark from '@/components/brand/BrandMark'
+import HeroAmbient from '@/components/brand/HeroAmbient'
+import BrandSignal from '@/components/brand/BrandSignal'
+import { buildWhatsAppUrl } from '@/lib/contact'
+import { companyProfile, homeHeroHighlights } from '@/lib/site-content'
+
+const heroPainPoints = [
+  {
+    title: 'Search is underperforming',
+    description: 'Visibility exists, but it is not turning into qualified demand.',
+  },
+  {
+    title: 'The website feels unclear',
+    description: 'Messaging, hierarchy, or page flow is making conversion harder than it should be.',
+  },
+  {
+    title: 'Tracking or operations are messy',
+    description: 'Reporting, lead handling, or automation needs a cleaner system behind the scenes.',
+  },
+]
 
 export default function Hero() {
-  const [isVisible, setIsVisible] = useState(false)
-
-  useEffect(() => {
-    // Small delay so animation triggers after mount
-    const t = setTimeout(() => setIsVisible(true), 50)
-    return () => clearTimeout(t)
-  }, [])
-
   return (
-    <section className="relative flex min-h-[92vh] flex-col overflow-hidden bg-white pt-16">
+    <section className="relative isolate overflow-hidden px-3 pt-28 pb-16 sm:px-4 md:pt-32 md:pb-24">
+      <div className="shell relative z-10">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_28rem] lg:items-center xl:grid-cols-[minmax(0,1fr)_31rem]">
+          <div className="relative isolate max-w-3xl">
+            <HeroAmbient className="hero-ambient-local" />
 
-      {/* Animated floating dots — full height & width */}
-      <div className="absolute inset-0 z-0">
-        <FloatingDots />
-        {/* Subtle radial fade so dots are softer at edges */}
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background: 'radial-gradient(ellipse 70% 60% at 50% 50%, transparent 0%, rgba(255,255,255,0.6) 70%, rgba(255,255,255,1) 100%)',
-          }}
-        />
-      </div>
+            <span className="section-kicker">
+              Indore based
+              <span className="hidden h-1 w-1 rounded-full bg-[rgba(9,9,11,0.18)] sm:inline-flex" />
+              remote-friendly delivery
+            </span>
 
-      {/* Main hero content */}
-      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-4 py-20 text-center md:px-8">
-        <h1
-          className={`mb-8 transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
-        >
-          <span className="block font-medium text-6xl tracking-tight text-zinc-950 md:text-7xl">
-            Experience liftoff
-          </span>
-          <span className="mt-4 block font-light text-2xl text-zinc-500 md:text-3xl">
-            with your agentic{' '}
-            <span className="font-semibold text-zinc-950">growth partner</span>
-          </span>
-        </h1>
+            <h1 className="section-title mt-6 max-w-[13ch]">
+              Search, websites, and automation built for serious growth.
+            </h1>
 
-        <div
-          className={`mb-12 flex flex-col items-center gap-4 sm:flex-row transition-all duration-1000 delay-150 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
-        >
-          <Link
-            href="/get-started"
-            className="inline-flex h-12 items-center rounded-full bg-zinc-950 px-8 text-sm font-medium text-white shadow-sm hover:bg-zinc-800 transition-colors"
-          >
-            Start your journey
-          </Link>
-          <Link
-            href="/services"
-            className="inline-flex h-12 items-center rounded-full border border-zinc-200 bg-white px-8 text-sm font-medium text-zinc-950 shadow-sm hover:bg-zinc-50 transition-colors"
-          >
-            Explore solutions
-          </Link>
-        </div>
+            <p className="section-copy mt-6 max-w-2xl">
+              ZaiferTech helps businesses turn scattered digital work into a sharper system for
+              traffic, leads, and operations. Calm strategy, direct execution, and cleaner
+              delivery stay at the center.
+            </p>
 
-        <p
-          className={`mx-auto max-w-xl text-base leading-relaxed text-zinc-500 transition-all duration-1000 delay-300 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
-        >
-          Full-service SEO, PPC, content, and development — delivered faster through agentic
-          workflows. AI agent orchestration producing the output of a traditional agency, with
-          expert-verified quality at every step.
-        </p>
-      </div>
+            <div className="action-row mt-8">
+              <Link href="/get-started" className="button-primary">
+                Start a Project
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <a
+                href={buildWhatsAppUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="button-secondary"
+              >
+                <MessageCircleMore className="h-4 w-4" />
+                WhatsApp
+              </a>
+            </div>
 
-      {/* Stats bar at the bottom of hero */}
-      <div
-        className={`relative z-10 pb-10 transition-all duration-1000 delay-500 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
-      >
-        <div className="mx-auto max-w-3xl px-6">
-          <div className="rounded-2xl border border-zinc-200/80 bg-white/80 px-8 py-5 shadow-sm backdrop-blur-sm">
-            <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-              {[
-                { value: '128K+', label: 'Qualified Leads' },
-                { value: '45%', label: 'Avg. Cost Reduction' },
-                { value: '217%', label: 'Organic Growth' },
-                { value: '€72M+', label: 'Revenue Generated' },
-              ].map(stat => (
-                <div key={stat.label} className="text-center">
-                  <div className="font-semibold text-zinc-950 text-lg">{stat.value}</div>
-                  <div className="mt-0.5 text-xs text-zinc-400">{stat.label}</div>
-                </div>
+            <p className="mt-4 text-sm text-[var(--text-muted)]">
+              Tell us the bottleneck. We will shape the next sensible scope from there.
+            </p>
+
+            <ul className="mt-8 flex flex-wrap gap-3 text-sm text-[var(--text-body)]">
+              {homeHeroHighlights.map(highlight => (
+                <li
+                  key={highlight}
+                  className="inline-flex items-center gap-2 rounded-full border border-[var(--line-soft)] bg-[var(--surface-panel)] px-4 py-2.5 font-semibold shadow-[0_10px_24px_rgba(9,9,11,0.04)]"
+                >
+                  <span className="h-2 w-2 rounded-full bg-[var(--accent-warm)]" />
+                  {highlight}
+                </li>
               ))}
+            </ul>
+          </div>
+
+          <div className="surface-panel rounded-[2.2rem] p-4 sm:p-6">
+            <div className="rounded-[1.65rem] border border-[var(--line-soft)] bg-[var(--surface-panel-strong)] p-5 sm:p-6">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
+                    ZaiferTech signal
+                  </p>
+                  <h2 className="mt-3 max-w-[10ch] text-[1.8rem] text-[var(--text-strong)]">
+                    Clear systems move better.
+                  </h2>
+                </div>
+                <BrandMark size={54} />
+              </div>
+
+              <BrandSignal className="mt-5 h-[165px] sm:h-[220px]" />
+
+              <div className="mt-5 overflow-hidden rounded-[1.35rem] border border-[var(--line-soft)] bg-[var(--surface-panel)]">
+                {heroPainPoints.map((item, index) => (
+                  <div
+                    key={item.title}
+                    className={`flex gap-4 px-4 py-4 ${index > 0 ? 'border-t border-[var(--line-soft)]' : ''}`}
+                  >
+                    <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--accent-cool-soft)] text-[0.7rem] font-bold text-[var(--surface-ink)]">
+                      0{index + 1}
+                    </span>
+                    <div>
+                      <h2 className="text-[1.02rem] text-[var(--text-strong)]">{item.title}</h2>
+                      <p className="mt-1 text-sm leading-6 text-[var(--text-body)]">
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <div className="metric-card">
+                <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
+                  Base
+                </p>
+                <p className="mt-3 text-base text-[var(--text-strong)]">{companyProfile.location}</p>
+              </div>
+              <div className="metric-card">
+                <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
+                  Typical first move
+                </p>
+                <p className="mt-3 text-base text-[var(--text-strong)]">
+                  Audit, page overhaul, tracking reset, or workflow cleanup.
+                </p>
+              </div>
             </div>
           </div>
         </div>
